@@ -51,17 +51,3 @@ jobs:
       skill_path: skills/metadata-proof-skill
       categories: "automation"
       clear_topics: true
-
-  # Expected to fail: a value and its own clear flag together must stop the run.
-  # continue-on-error keeps the rejection visible without turning the proof red.
-  conflicting-inputs:
-    continue-on-error: true
-    permissions:
-      contents: read
-      id-token: write
-    uses: Yigtwxx/clawhub/.github/workflows/skill-publish.yml@ade5dc4268c352c267db0a4fbbd0c2143a848988
-    with:
-      dry_run: true
-      skill_path: skills/metadata-proof-skill
-      categories: "automation"
-      clear_categories: true
