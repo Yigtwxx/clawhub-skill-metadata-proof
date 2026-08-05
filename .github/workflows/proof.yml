@@ -1,6 +1,6 @@
 name: Skill Catalog Metadata Proof
 
-# Both jobs hardcode dry_run: true and pass no secrets, so this workflow can
+# Every job hardcodes dry_run: true and passes no secrets, so this workflow can
 # never publish. It pins the ClawHub branch by full commit SHA.
 
 on:
@@ -13,7 +13,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: Yigtwxx/clawhub/.github/workflows/skill-publish.yml@d4c222180958011e7344414078bdb1c53ffad217
+    uses: Yigtwxx/clawhub/.github/workflows/skill-publish.yml@ade5dc4268c352c267db0a4fbbd0c2143a848988
     with:
       dry_run: true
       skill_path: skills/metadata-proof-skill
@@ -25,7 +25,43 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: Yigtwxx/clawhub/.github/workflows/skill-publish.yml@d4c222180958011e7344414078bdb1c53ffad217
+    uses: Yigtwxx/clawhub/.github/workflows/skill-publish.yml@ade5dc4268c352c267db0a4fbbd0c2143a848988
     with:
       dry_run: true
       skill_path: skills/metadata-proof-skill
+
+  clear-both:
+    permissions:
+      contents: read
+      id-token: write
+    uses: Yigtwxx/clawhub/.github/workflows/skill-publish.yml@ade5dc4268c352c267db0a4fbbd0c2143a848988
+    with:
+      dry_run: true
+      skill_path: skills/metadata-proof-skill
+      clear_categories: true
+      clear_topics: true
+
+  set-one-clear-other:
+    permissions:
+      contents: read
+      id-token: write
+    uses: Yigtwxx/clawhub/.github/workflows/skill-publish.yml@ade5dc4268c352c267db0a4fbbd0c2143a848988
+    with:
+      dry_run: true
+      skill_path: skills/metadata-proof-skill
+      categories: "automation"
+      clear_topics: true
+
+  # Expected to fail: a value and its own clear flag together must stop the run.
+  # continue-on-error keeps the rejection visible without turning the proof red.
+  conflicting-inputs:
+    continue-on-error: true
+    permissions:
+      contents: read
+      id-token: write
+    uses: Yigtwxx/clawhub/.github/workflows/skill-publish.yml@ade5dc4268c352c267db0a4fbbd0c2143a848988
+    with:
+      dry_run: true
+      skill_path: skills/metadata-proof-skill
+      categories: "automation"
+      clear_categories: true
