@@ -1,0 +1,22 @@
+name: Skill Catalog Metadata Conflict Guard
+
+# This run is expected to FAIL. Setting a metadata value and its own clear flag
+# together must stop the run before anything is published; the failure is the
+# assertion. dry_run is hardcoded true and no secrets are passed.
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  conflicting-inputs:
+    permissions:
+      contents: read
+      id-token: write
+    uses: Yigtwxx/clawhub/.github/workflows/skill-publish.yml@ade5dc4268c352c267db0a4fbbd0c2143a848988
+    with:
+      dry_run: true
+      skill_path: skills/metadata-proof-skill
+      categories: "automation"
+      clear_categories: true
