@@ -1,0 +1,35 @@
+name: Skill Metadata Newline Log Proof
+
+# Both jobs hardcode dry_run: true and pass no secrets, so this workflow can
+# never publish. Each pins a ClawHub commit by full SHA: one before the log
+# escaping fix, one after it, with identical multi-line metadata.
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  before-fix:
+    permissions:
+      contents: read
+      id-token: write
+    uses: Yigtwxx/clawhub/.github/workflows/skill-publish.yml@cc70d190dbcea71a6f04b117ad2f74fe5054fc81
+    with:
+      dry_run: true
+      skill_path: skills/metadata-proof-skill
+      changelog: |-
+        Line one of the changelog value.
+        ::notice title=INJECTED::this line came from a changelog input
+
+  after-fix:
+    permissions:
+      contents: read
+      id-token: write
+    uses: Yigtwxx/clawhub/.github/workflows/skill-publish.yml@ba6aa780bf305ce1c1d807484c76108258b2b6ce
+    with:
+      dry_run: true
+      skill_path: skills/metadata-proof-skill
+      changelog: |-
+        Line one of the changelog value.
+        ::notice title=INJECTED::this line came from a changelog input
