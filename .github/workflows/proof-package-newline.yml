@@ -1,0 +1,39 @@
+name: Package Metadata Newline Log Proof
+
+# Both jobs hardcode dry_run: true and pass no secrets, so this workflow can
+# never publish. Each pins a ClawHub commit by full SHA: one before the log
+# escaping fix, one after it, with identical multi-line metadata.
+#
+# The step under test, "Resolve publish command", runs early in the reusable
+# workflow. This caller repository carries no ClawPack package, so both jobs
+# stop later at plugin validation; that is after the line being proven.
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  before-fix:
+    permissions:
+      actions: read
+      contents: read
+      id-token: write
+    uses: Yigtwxx/clawhub/.github/workflows/package-publish.yml@82313c2bb17fb8401c41c8ed2b0144d42b461ae7
+    with:
+      dry_run: true
+      changelog: |-
+        Line one of the changelog value.
+        ::notice title=INJECTED::this line came from a changelog input
+
+  after-fix:
+    permissions:
+      actions: read
+      contents: read
+      id-token: write
+    uses: Yigtwxx/clawhub/.github/workflows/package-publish.yml@25aec92957aac15b7dc719c0dbc5c56e1c4b5d0f
+    with:
+      dry_run: true
+      changelog: |-
+        Line one of the changelog value.
+        ::notice title=INJECTED::this line came from a changelog input
