@@ -1,0 +1,33 @@
+name: Skill Changelog Whitespace Proof
+
+# Both jobs hardcode dry_run: true and pass no secrets, so this workflow can
+# never publish. Each pins a ClawHub commit by full SHA: one before the changelog
+# trimming fix, one after it, with an identical changelog input. The value is a
+# double-quoted scalar rather than a block scalar so the leading indentation and
+# the trailing hard-break spaces are byte-exact in both jobs.
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  before-fix:
+    permissions:
+      contents: read
+      id-token: write
+    uses: Yigtwxx/clawhub/.github/workflows/skill-publish.yml@f47107d117381576bad760f56bbfb23fac02b6f2
+    with:
+      dry_run: true
+      skill_path: skills/metadata-proof-skill
+      changelog: "  - indented bullet  \n  - bullet ending in a hard break  \n"
+
+  after-fix:
+    permissions:
+      contents: read
+      id-token: write
+    uses: Yigtwxx/clawhub/.github/workflows/skill-publish.yml@781115136eec3b8f0ac3cb172166f8541ee4aac0
+    with:
+      dry_run: true
+      skill_path: skills/metadata-proof-skill
+      changelog: "  - indented bullet  \n  - bullet ending in a hard break  \n"
